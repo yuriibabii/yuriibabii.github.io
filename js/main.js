@@ -4,6 +4,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const formatNum = (n) => n >= 1000 ? (n % 1000 === 0 ? (n/1000)+'K' : (n/1000).toFixed(1)+'K') : String(n);
 
   function countUp(el) {
+    if (el.dataset.counted) return; el.dataset.counted = '1';
     const target = parseFloat(el.dataset.count);
     const pre = el.dataset.prefix || '';
     const suf = el.dataset.suffix || '';
