@@ -97,8 +97,7 @@ annotation. **The widget is stripped from every page before deploy** — the pub
 
 - Additional screenshots for DraftKings / iFIT / Epicentr (add when available; design must look
   complete without them).
-- Confirm final email to display: CV shows both `yurii.babii.work@gmail.com` and
-  `yurii.babii.v@gmail.com`. Default to `yurii.babii.work@gmail.com` unless told otherwise.
+- Public contact email: **`yurii.babii.work@gmail.com`** (confirmed).
 
 ## Out of scope
 
