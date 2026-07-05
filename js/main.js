@@ -39,5 +39,9 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   const toggle = document.querySelector('[data-nav-toggle]');
-  if (toggle) toggle.addEventListener('click', () => document.querySelector('[data-nav]')?.classList.toggle('open'));
+  if (toggle) toggle.addEventListener('click', () => {
+    const nav = document.querySelector('[data-nav]');
+    nav?.classList.toggle('open');
+    toggle.setAttribute('aria-expanded', String(nav?.classList.contains('open') ?? false));
+  });
 });
