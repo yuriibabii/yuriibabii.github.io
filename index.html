@@ -1,0 +1,943 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Yurii Babii — Lead Android Engineer</title>
+  <meta name="description" content="Lead Android Engineer with 8+ years building reliable, user-centric mobile products — from Super Bowl-scale betting to a founder-led app with 25K+ installs." />
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="Yurii Babii — Lead Android Engineer" />
+  <meta property="og:description" content="Lead Android Engineer with 8+ years building reliable, user-centric mobile products — from Super Bowl-scale betting to a founder-led app with 25K+ installs." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://yuriibabii.github.io/" />
+  <meta property="og:image" content="assets/og-image.png" />
+
+  <!-- Favicon -->
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600&family=Inter:wght@400;500;600&display=swap" />
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="css/style.css" />
+
+  <style>
+    /* ── Nav ────────────────────────────────────────────── */
+    .site-nav {
+      position: sticky;
+      top: 0;
+      z-index: 900;
+      background: color-mix(in srgb, var(--bg) 92%, transparent);
+      backdrop-filter: blur(8px);
+      border-bottom: 1px solid color-mix(in srgb, var(--text) 8%, transparent);
+    }
+
+    .site-nav .container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 56px;
+    }
+
+    .site-nav__name {
+      font-family: 'Fraunces', Georgia, serif;
+      font-size: 1.05rem;
+      font-weight: 600;
+      color: var(--text);
+      text-decoration: none;
+    }
+
+    .site-nav__links {
+      display: flex;
+      align-items: center;
+      gap: var(--s4);
+      list-style: none;
+    }
+
+    .site-nav__links a {
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: var(--muted);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .site-nav__links a:hover {
+      color: var(--text);
+    }
+
+    .site-nav__toggle {
+      display: none;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: var(--s2);
+      color: var(--text);
+      font-size: 1.25rem;
+      line-height: 1;
+    }
+
+    @media (max-width: 640px) {
+      .site-nav__toggle { display: flex; align-items: center; }
+
+      .site-nav__links {
+        display: none;
+        position: absolute;
+        top: 56px;
+        left: 0;
+        right: 0;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0;
+        background: var(--bg);
+        border-bottom: 1px solid color-mix(in srgb, var(--text) 8%, transparent);
+        padding: var(--s3) 0;
+      }
+
+      .site-nav__links.open {
+        display: flex;
+      }
+
+      .site-nav__links li {
+        width: 100%;
+      }
+
+      .site-nav__links a {
+        display: block;
+        padding: var(--s2) clamp(1rem, 4vw, 2rem);
+        font-size: 1rem;
+      }
+    }
+
+    /* ── Hero ───────────────────────────────────────────── */
+    .hero {
+      padding-block: clamp(4rem, 10vw, 8rem);
+    }
+
+    .hero__tagline {
+      font-size: clamp(1.1rem, 2vw, 1.4rem);
+      color: var(--clay);
+      font-weight: 600;
+      margin-top: var(--s2);
+      font-family: 'Fraunces', Georgia, serif;
+    }
+
+    .hero__pitch {
+      max-width: 600px;
+      margin-top: var(--s3);
+      font-size: 1.05rem;
+      color: var(--muted);
+    }
+
+    .hero__location {
+      margin-top: var(--s3);
+      font-size: 0.9rem;
+      color: var(--muted);
+      display: flex;
+      align-items: center;
+      gap: var(--s2);
+    }
+
+    .hero__location svg {
+      flex-shrink: 0;
+    }
+
+    .hero__cta {
+      margin-top: var(--s5);
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--s3);
+    }
+
+    /* ── Metrics ────────────────────────────────────────── */
+    .metrics-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: var(--s3);
+    }
+
+    .metric__label {
+      font-size: 0.8rem;
+      color: var(--muted);
+      margin-top: var(--s2);
+      font-weight: 500;
+    }
+
+    /* ── Work ───────────────────────────────────────────── */
+    .work-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: var(--s4);
+    }
+
+    .card__eyebrow {
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--clay);
+      margin-bottom: var(--s2);
+    }
+
+    .card h3 {
+      margin-bottom: var(--s2);
+    }
+
+    .card__meta {
+      font-size: 0.85rem;
+      color: var(--muted);
+      margin-top: var(--s2);
+    }
+
+    .card__arrow {
+      margin-top: var(--s3);
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: var(--sage);
+    }
+
+    .card--secondary {
+      background: color-mix(in srgb, var(--sage) 8%, var(--bg));
+      box-shadow: none;
+      border: 1px solid color-mix(in srgb, var(--sage) 20%, var(--bg));
+    }
+
+    .card--secondary:hover {
+      transform: none;
+      box-shadow: none;
+    }
+
+    .work-secondary {
+      margin-top: var(--s4);
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: var(--s3);
+    }
+
+    .earlier-note {
+      margin-top: var(--s3);
+      font-size: 0.875rem;
+      color: var(--muted);
+      font-style: italic;
+    }
+
+    /* ── Timeline ───────────────────────────────────────── */
+    .timeline__date {
+      font-size: 0.8rem;
+      font-weight: 500;
+      color: var(--clay);
+      margin-bottom: var(--s1);
+    }
+
+    .timeline__title {
+      font-size: 1.05rem;
+      font-weight: 600;
+    }
+
+    .timeline__org {
+      font-size: 0.9rem;
+      color: var(--muted);
+      margin-bottom: var(--s1);
+    }
+
+    .timeline__impact {
+      font-size: 0.9rem;
+      color: var(--muted);
+    }
+
+    /* ── Skills ─────────────────────────────────────────── */
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: var(--s5);
+    }
+
+    .skill-group__label {
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--clay);
+      margin-bottom: var(--s3);
+    }
+
+    .skill-group__chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--s2);
+    }
+
+    /* ── About ──────────────────────────────────────────── */
+    .about-body {
+      max-width: 680px;
+    }
+
+    .about-body p {
+      font-size: 1.05rem;
+      line-height: 1.75;
+      margin-bottom: var(--s3);
+    }
+
+    .about-list {
+      list-style: none;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      gap: var(--s2);
+    }
+
+    .about-list li {
+      display: flex;
+      align-items: flex-start;
+      gap: var(--s2);
+      font-size: 0.95rem;
+      color: var(--muted);
+    }
+
+    .about-list li::before {
+      content: '→';
+      color: var(--sage);
+      flex-shrink: 0;
+      margin-top: 0.05em;
+    }
+
+    /* ── Contact ────────────────────────────────────────── */
+    .contact-layout {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--s6);
+    }
+
+    @media (max-width: 640px) {
+      .contact-layout { grid-template-columns: 1fr; gap: var(--s5); }
+    }
+
+    .contact-cta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--s3);
+      margin-top: var(--s4);
+    }
+
+    .contact-detail-group {
+      display: flex;
+      flex-direction: column;
+      gap: var(--s4);
+    }
+
+    .detail-block h4 {
+      font-family: 'Fraunces', Georgia, serif;
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      margin-bottom: var(--s2);
+    }
+
+    .detail-block dl {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: var(--s1) var(--s3);
+      font-size: 0.9rem;
+    }
+
+    .detail-block dt {
+      color: var(--muted);
+    }
+
+    .detail-block dd {
+      color: var(--text);
+      font-weight: 500;
+    }
+
+    .detail-block ul {
+      list-style: none;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      gap: var(--s1);
+      font-size: 0.9rem;
+    }
+
+    .detail-block li {
+      color: var(--text);
+    }
+
+    .detail-block .cert-issuer {
+      color: var(--muted);
+      font-size: 0.8rem;
+    }
+
+    /* ── Section headings ───────────────────────────────── */
+    .section-heading {
+      margin-bottom: var(--s5);
+    }
+
+    .section-heading h2 {
+      margin-bottom: var(--s2);
+    }
+
+    .section-heading p {
+      color: var(--muted);
+      font-size: 1rem;
+      max-width: 560px;
+    }
+
+    /* ── Footer ─────────────────────────────────────────── */
+    .site-footer {
+      background: color-mix(in srgb, var(--text) 4%, var(--bg));
+      border-top: 1px solid color-mix(in srgb, var(--text) 8%, transparent);
+      padding-block: var(--s5);
+    }
+
+    .site-footer .container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: var(--s3);
+    }
+
+    .site-footer__copy {
+      font-size: 0.85rem;
+      color: var(--muted);
+    }
+
+    .site-footer__links {
+      display: flex;
+      gap: var(--s3);
+      flex-wrap: wrap;
+    }
+
+    .site-footer__links a {
+      font-size: 0.85rem;
+      color: var(--muted);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .site-footer__links a:hover {
+      color: var(--text);
+    }
+  </style>
+</head>
+<body>
+
+<!-- ══════════════════════════════════════════════════════
+     NAV
+═══════════════════════════════════════════════════════ -->
+<header class="site-nav">
+  <div class="container">
+    <a href="#" class="site-nav__name">Yurii Babii</a>
+    <button class="site-nav__toggle" data-nav-toggle aria-label="Toggle navigation">&#9776;</button>
+    <ul class="site-nav__links" data-nav>
+      <li><a href="#work">Work</a></li>
+      <li><a href="#experience">Experience</a></li>
+      <li><a href="#skills">Skills</a></li>
+      <li><a href="#about">About</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </div>
+</header>
+
+<!-- ══════════════════════════════════════════════════════
+     HERO
+═══════════════════════════════════════════════════════ -->
+<section class="hero section" id="hero">
+  <div class="container reveal">
+    <h1>Yurii Babii</h1>
+    <p class="hero__tagline">Lead Android Engineer</p>
+    <p class="hero__pitch">8+ years building reliable, user-centric mobile products — from Super Bowl-scale betting to a founder-led app with 25K+ installs.</p>
+    <p class="hero__location">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+      Nice, France · Open to Remote (France / Global)
+    </p>
+    <div class="hero__cta">
+      <a href="mailto:yurii.babii.work@gmail.com" class="btn btn-primary">Email me</a>
+      <a href="https://linkedin.com/in/yuriibabii" class="btn" target="_blank" rel="noopener">LinkedIn</a>
+      <a href="assets/cv/Yurii-Babii-CV.pdf" class="btn" download>Download CV</a>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════
+     IMPACT METRICS
+═══════════════════════════════════════════════════════ -->
+<section class="section" id="impact" style="background: color-mix(in srgb, var(--sage) 5%, var(--bg));">
+  <div class="container">
+    <div class="section-heading reveal">
+      <h2>By the numbers</h2>
+    </div>
+    <div class="metrics-grid reveal">
+
+      <div class="metric">
+        <div class="metric__num" data-count="8" data-suffix="+ yrs">0</div>
+        <div class="metric__label">experience</div>
+      </div>
+
+      <div class="metric">
+        <div class="metric__num">12M+</div>
+        <div class="metric__label">bets handled</div>
+      </div>
+
+      <div class="metric">
+        <div class="metric__num" data-count="59" data-suffix="K/min">0</div>
+        <div class="metric__label">Super Bowl peak</div>
+      </div>
+
+      <div class="metric">
+        <div class="metric__num">2.5M</div>
+        <div class="metric__label">users</div>
+      </div>
+
+      <div class="metric">
+        <div class="metric__num" data-count="25.3" data-float="true" data-suffix="K">0</div>
+        <div class="metric__label">UAdemy installs</div>
+      </div>
+
+      <div class="metric">
+        <div class="metric__num" data-count="4.9" data-float="true" data-suffix="★">0</div>
+        <div class="metric__label">796 ratings</div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════
+     SELECTED WORK
+═══════════════════════════════════════════════════════ -->
+<section class="section" id="work">
+  <div class="container">
+    <div class="section-heading reveal">
+      <h2>Selected work</h2>
+      <p>Deep-dives into the problems, constraints, and outcomes that shaped my engineering practice.</p>
+    </div>
+
+    <div class="work-grid">
+
+      <a href="case-studies/draftkings.html" class="card reveal">
+        <div class="card__eyebrow">DraftKings · 2021–Present</div>
+        <h3>Native Android at Super Bowl scale</h3>
+        <p class="card__meta">12M+ bets · reliability & on-call · betting at peak throughput of ~59K bets/min</p>
+        <p class="card__arrow">Read case study →</p>
+      </a>
+
+      <a href="case-studies/uademy.html" class="card reveal">
+        <div class="card__eyebrow">UAdemy · 2021–2023</div>
+        <h3>Founder — built + led remote team of 6 through wartime</h3>
+        <p class="card__meta">25.3K installs · 4.9★ · launched and iterated under extraordinary conditions</p>
+        <p class="card__arrow">Read case study →</p>
+      </a>
+
+      <a href="case-studies/epicentr.html" class="card reveal">
+        <div class="card__eyebrow">Epicentr K · 2020</div>
+        <h3>Built the mobile department ground-up</h3>
+        <p class="card__meta">Ukraine's largest retailer · ~75 hypermarkets · zero-to-one mobile org</p>
+        <p class="card__arrow">Read case study →</p>
+      </a>
+
+    </div>
+
+    <div class="work-secondary">
+      <div class="card card--secondary reveal">
+        <div class="card__eyebrow">iFIT · 2020–2022</div>
+        <h3>Connected-fitness platform</h3>
+        <p class="card__meta">BLE device integration · real-time workout metrics · video streaming for smart equipment</p>
+      </div>
+    </div>
+
+    <p class="earlier-note reveal">Earlier: Trinetix, High Marks — cross-platform Xamarin development.</p>
+
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════
+     EXPERIENCE TIMELINE
+═══════════════════════════════════════════════════════ -->
+<section class="section" id="experience" style="background: color-mix(in srgb, var(--sage) 5%, var(--bg));">
+  <div class="container">
+    <div class="section-heading reveal">
+      <h2>Experience</h2>
+    </div>
+
+    <div class="timeline">
+
+      <div class="timeline__item reveal">
+        <div class="timeline__date">Oct 2021 – Present</div>
+        <div class="timeline__title">Senior Software Engineer</div>
+        <div class="timeline__org">DraftKings</div>
+        <div class="timeline__impact">Native Android reliability at scale — Super Bowl peaks, on-call ownership, and betting infrastructure serving millions of users.</div>
+      </div>
+
+      <div class="timeline__item reveal">
+        <div class="timeline__date">Jun 2021 – Mar 2023</div>
+        <div class="timeline__title">Founder / Lead Developer</div>
+        <div class="timeline__org">Gemplay (UAdemy)</div>
+        <div class="timeline__impact">Founded the company, led a remote team of 6 through wartime Ukraine, shipped to 25.3K installs and a 4.9★ rating.</div>
+      </div>
+
+      <div class="timeline__item reveal">
+        <div class="timeline__date">Nov 2020 – Mar 2022</div>
+        <div class="timeline__title">Senior Software Engineer</div>
+        <div class="timeline__org">iFIT</div>
+        <div class="timeline__impact">Connected-fitness Android: BLE hardware integration, real-time workout metrics, video streaming for smart equipment.</div>
+      </div>
+
+      <div class="timeline__item reveal">
+        <div class="timeline__date">Jul 2020 – Mar 2021</div>
+        <div class="timeline__title">Head of Mobile Application Development</div>
+        <div class="timeline__org">Epicentr K</div>
+        <div class="timeline__impact">Built and led the mobile department from scratch at Ukraine's largest retailer (~75 hypermarkets).</div>
+      </div>
+
+      <div class="timeline__item reveal">
+        <div class="timeline__date">Mar 2020 – Jul 2020</div>
+        <div class="timeline__title">Lead Xamarin Developer</div>
+        <div class="timeline__org">Epicentr K</div>
+        <div class="timeline__impact">Laid technical foundations for the cross-platform retail app before moving into the department-lead role.</div>
+      </div>
+
+      <div class="timeline__item reveal">
+        <div class="timeline__date">May 2017 – Mar 2020</div>
+        <div class="timeline__title">Senior Xamarin Developer</div>
+        <div class="timeline__org">Trinetix</div>
+        <div class="timeline__impact">Cross-platform mobile development across multiple client products in finance, health, and enterprise.</div>
+      </div>
+
+      <div class="timeline__item reveal">
+        <div class="timeline__date">Jan 2017 – May 2017</div>
+        <div class="timeline__title">Xamarin Developer</div>
+        <div class="timeline__org">High Marks</div>
+        <div class="timeline__impact">First professional role — cross-platform iOS/Android development with Xamarin.</div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════
+     SKILLS
+═══════════════════════════════════════════════════════ -->
+<section class="section" id="skills">
+  <div class="container">
+    <div class="section-heading reveal">
+      <h2>Skills</h2>
+    </div>
+
+    <div class="skills-grid">
+
+      <div class="reveal">
+        <div class="skill-group__label">Android</div>
+        <div class="skill-group__chips">
+          <span class="chip">Kotlin</span>
+          <span class="chip">Jetpack Compose</span>
+          <span class="chip">Coroutines/Flows</span>
+          <span class="chip">MVVM</span>
+          <span class="chip">Redux</span>
+          <span class="chip">Hilt/Dagger</span>
+          <span class="chip">SQL</span>
+          <span class="chip">REST</span>
+          <span class="chip">WebSockets</span>
+          <span class="chip">JUnit</span>
+          <span class="chip">Perfetto</span>
+        </div>
+      </div>
+
+      <div class="reveal">
+        <div class="skill-group__label">CI/CD &amp; Observability</div>
+        <div class="skill-group__chips">
+          <span class="chip">Firebase</span>
+          <span class="chip">Crashlytics</span>
+          <span class="chip">New Relic</span>
+          <span class="chip">Azure</span>
+          <span class="chip">AppCenter</span>
+          <span class="chip">Play Console</span>
+          <span class="chip">App Store Connect</span>
+          <span class="chip">TestFlight</span>
+        </div>
+      </div>
+
+      <div class="reveal">
+        <div class="skill-group__label">AI</div>
+        <div class="skill-group__chips">
+          <span class="chip">Cursor</span>
+          <span class="chip">Claude Code</span>
+          <span class="chip">ChatGPT</span>
+          <span class="chip">Mistral</span>
+        </div>
+      </div>
+
+      <div class="reveal">
+        <div class="skill-group__label">Cross-platform</div>
+        <div class="skill-group__chips">
+          <span class="chip">C#</span>
+          <span class="chip">.NET</span>
+          <span class="chip">Flutter</span>
+          <span class="chip">Dart</span>
+          <span class="chip">Xamarin Forms</span>
+          <span class="chip">Xamarin iOS</span>
+          <span class="chip">Xamarin Android</span>
+          <span class="chip">Supabase</span>
+          <span class="chip">Figma</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════
+     ABOUT
+═══════════════════════════════════════════════════════ -->
+<section class="section" id="about" style="background: color-mix(in srgb, var(--clay) 5%, var(--bg));">
+  <div class="container">
+    <div class="section-heading reveal">
+      <h2>About</h2>
+    </div>
+
+    <div class="about-body reveal">
+      <p>
+        I build Android products I'm genuinely proud of — reliable, thoughtful, and built to last under real pressure. Eight years in, what drives me most is still the craft: clean architecture, systems that scale, and teams that grow. Outside the editor, I'm just as deliberate about how I spend my energy.
+      </p>
+      <ul class="about-list">
+        <li>Proud half-Husky owner — daily reminder that patience and persistence pay off.</li>
+        <li>Training for my first half-marathon using WHOOP and structured health protocols.</li>
+        <li>Yoga and spiritual practice — both keep me grounded when complexity spikes.</li>
+        <li>Calendars, notes, and task lists are a genuine joy — organization is a form of creative thinking.</li>
+        <li>Exploring electronic music production — a different kind of system design.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════
+     CONTACT
+═══════════════════════════════════════════════════════ -->
+<section class="section" id="contact">
+  <div class="container">
+    <div class="section-heading reveal">
+      <h2>Get in touch</h2>
+      <p>Open to senior and lead Android roles, remote or Nice-based. Happy to talk.</p>
+    </div>
+
+    <div class="contact-layout">
+
+      <div class="reveal">
+        <p style="font-size:1.05rem; color:var(--muted); margin-bottom:var(--s3);">
+          Best way to reach me is email. I aim to reply within one business day.
+        </p>
+        <div class="contact-cta">
+          <a href="mailto:yurii.babii.work@gmail.com" class="btn btn-primary">yurii.babii.work@gmail.com</a>
+          <a href="https://linkedin.com/in/yuriibabii" class="btn" target="_blank" rel="noopener">LinkedIn</a>
+          <a href="assets/cv/Yurii-Babii-CV.pdf" class="btn" download>Download CV</a>
+        </div>
+      </div>
+
+      <div class="contact-detail-group reveal">
+
+        <div class="detail-block">
+          <h4>Languages</h4>
+          <dl>
+            <dt>English</dt><dd>Full Professional</dd>
+            <dt>French</dt><dd>Basic</dd>
+            <dt>Ukrainian</dt><dd>Native</dd>
+            <dt>Russian</dt><dd>Fluent</dd>
+          </dl>
+        </div>
+
+        <div class="detail-block">
+          <h4>Certifications</h4>
+          <ul>
+            <li>
+              Jetpack Compose Masterclass
+              <span class="cert-issuer"> — Philipp Lackner</span>
+            </li>
+          </ul>
+        </div>
+
+        <div class="detail-block">
+          <h4>Education</h4>
+          <ul>
+            <li>
+              BSc Computer Software Engineering<br>
+              <span class="cert-issuer">Lviv Polytechnic National University · 2016–2019</span>
+            </li>
+            <li style="margin-top:var(--s2);">
+              Associate's Computer Engineering<br>
+              <span class="cert-issuer">Khmelnitsky Polytechnic College · 2012–2016</span>
+            </li>
+          </ul>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════
+     FOOTER
+═══════════════════════════════════════════════════════ -->
+<footer class="site-footer">
+  <div class="container">
+    <span class="site-footer__copy">&copy; 2025 Yurii Babii</span>
+    <nav class="site-footer__links">
+      <a href="mailto:yurii.babii.work@gmail.com">Email</a>
+      <a href="https://linkedin.com/in/yuriibabii" target="_blank" rel="noopener">LinkedIn</a>
+      <a href="assets/cv/Yurii-Babii-CV.pdf" download>Download CV</a>
+    </nav>
+  </div>
+</footer>
+
+<script src="js/main.js"></script>
+
+<!-- ============ CLAUDE REVIEW WIDGET — do not remove or rename ids ============ -->
+<script id="review-data" type="application/json">{"version":1,"comments":[]}</script>
+<style>
+#cr-bubble{position:fixed;z-index:100000;background:#1f2330;border:1px solid rgba(88,166,255,.5);border-radius:8px;padding:4px;display:none;box-shadow:0 4px 16px rgba(0,0,0,.5)}
+#cr-bubble.cr-open{display:flex}
+#cr-bubble-btn{font-size:12px;padding:5px 12px;border-radius:6px;cursor:pointer;border:none;background:transparent;color:#e8eaf0;white-space:nowrap}
+#cr-bubble-btn:hover{background:rgba(88,166,255,.2);color:#58a6ff}
+#cr-popover{position:fixed;z-index:99999;width:320px;background:#1e2736;border:1px solid rgba(88,166,255,.4);border-radius:12px;box-shadow:0 8px 32px rgba(0,0,0,.6);padding:14px;display:none;font:13px/1.5 system-ui,sans-serif}
+#cr-popover.cr-open{display:block}
+#cr-popover-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
+#cr-popover-title{font-size:11px;font-weight:600;color:#58a6ff;text-transform:uppercase;letter-spacing:.05em}
+#cr-popover-close{cursor:pointer;color:#8b949e;font-size:15px;padding:2px 6px;border-radius:5px;border:none;background:none}
+#cr-popover-close:hover{background:#21293a;color:#e8eaf0}
+#cr-popover-quote{font-size:11px;font-style:italic;color:#bc8cff;border-left:2px solid #bc8cff;padding-left:7px;margin-bottom:10px;max-height:48px;overflow:hidden}
+#cr-popover textarea{width:100%;box-sizing:border-box;min-height:80px;resize:vertical;background:#21293a;border:1px solid #30363d;border-radius:7px;color:#e8eaf0;font:inherit;padding:7px 9px;outline:none}
+#cr-popover textarea:focus{border-color:#58a6ff}
+#cr-popover-actions{display:flex;gap:6px;margin-top:8px;justify-content:flex-end}
+#cr-popover-actions button{font-size:12px;padding:5px 12px;border-radius:7px;cursor:pointer;border:1px solid #30363d;background:#21293a;color:#e8eaf0}
+#cr-popover-actions button:hover{border-color:#58a6ff;color:#58a6ff}
+#cr-popover-save{background:#58a6ff!important;color:#000!important;border-color:#58a6ff!important}
+#cr-popover-save:hover{background:#7dbfff!important}
+#cr-popover-del{color:#f85149!important;border-color:rgba(248,81,73,.35)!important}
+#cr-popover-del:hover{background:rgba(248,81,73,.1)!important}
+.cr-hl{background:rgba(188,140,255,.2);border-bottom:2px solid #bc8cff;cursor:pointer;border-radius:2px}
+.cr-hl:hover{background:rgba(188,140,255,.35)}
+.cr-hl.cr-resolved{background:rgba(63,185,80,.15);border-bottom-color:#3fb950;opacity:.7}
+#cr-panel{position:fixed;top:0;right:0;bottom:44px;width:20%;min-width:200px;max-width:300px;background:transparent;display:flex;flex-direction:column;z-index:99998;pointer-events:none;transition:background .2s}
+#cr-panel.cr-has{background:rgba(13,17,23,.92);border-left:1px solid #30363d;pointer-events:all}
+#cr-panel-head{padding:10px 12px 7px;border-bottom:1px solid #30363d;display:flex;align-items:center;flex-shrink:0}
+#cr-panel-label{font-size:11px;font-weight:600;color:#8b949e;text-transform:uppercase;letter-spacing:.05em;font:11px/1.2 system-ui,sans-serif}
+#cr-panel-count{font-size:13px;font-weight:700;color:#bc8cff;margin-left:auto}
+#cr-panel-body{flex:1;overflow-y:auto;padding:6px 0}
+#cr-panel-body::-webkit-scrollbar{width:3px}
+#cr-panel-body::-webkit-scrollbar-thumb{background:#30363d;border-radius:3px}
+#cr-panel-empty{font-size:12px;color:#8b949e;padding:14px 12px;line-height:1.5;display:none}
+.cr-item{padding:9px 12px;border-bottom:1px solid rgba(48,54,61,.5);transition:background .1s}
+.cr-item:hover{background:rgba(88,166,255,.05)}
+.cr-item-n{font-size:10px;color:#8b949e;margin-bottom:3px;font:10px/1.2 system-ui,sans-serif}
+.cr-item-q{font-size:11px;font-style:italic;color:#bc8cff;border-left:2px solid #bc8cff;padding-left:5px;margin-bottom:4px;cursor:pointer;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.cr-item-q:hover{color:#d4a8ff}
+.cr-item-t{font-size:12px;color:#e8eaf0;line-height:1.4;cursor:pointer}
+.cr-item-t:hover{color:#58a6ff}
+.cr-item-m{font-size:10px;color:#8b949e;margin-top:3px;font:10px/1.2 system-ui,sans-serif}
+.cr-item-acts{margin-top:4px;display:flex;gap:6px}
+.cr-item-del{font-size:10px;color:#f85149;cursor:pointer;padding:1px 6px;border-radius:4px;border:1px solid rgba(248,81,73,.25);background:none}
+.cr-item-del:hover{background:rgba(248,81,73,.1)}
+.cr-item-resolve{font-size:10px;color:#3fb950;cursor:pointer;padding:1px 6px;border-radius:4px;border:1px solid rgba(63,185,80,.35);background:none}
+.cr-item-resolve:hover{background:rgba(63,185,80,.12)}
+.cr-item-reopen{font-size:10px;color:#8b949e;cursor:pointer;padding:1px 6px;border-radius:4px;border:1px solid rgba(139,148,158,.3);background:none}
+.cr-item-reopen:hover{background:rgba(139,148,158,.12)}
+.cr-item.cr-arch{opacity:.5}
+.cr-item.cr-arch:hover{opacity:.85}
+.cr-panel-section{font:10px/1.2 system-ui,sans-serif;font-weight:600;color:#8b949e;text-transform:uppercase;letter-spacing:.05em;padding:9px 12px 4px;border-top:1px solid #30363d;border-bottom:1px solid rgba(48,54,61,.5)}
+#cr-bar{position:fixed;bottom:0;left:0;right:0;height:44px;background:#1a2030;border-top:1px solid #30363d;display:flex;align-items:center;gap:12px;padding:0 16px;font:12px/1.4 system-ui,sans-serif;z-index:99997}
+#cr-bar b{font-size:13px;font-weight:600;color:#e8eaf0}
+#cr-bar .cr-cnt{font-size:18px;font-weight:700;color:#bc8cff}
+#cr-bar input{font-size:12px;padding:4px 9px;border-radius:7px;border:1px solid #30363d;background:#21293a;color:#e8eaf0;outline:none;width:150px;font:inherit}
+#cr-bar input:focus{border-color:#58a6ff}
+#cr-bar button{font-size:12px;padding:5px 14px;border-radius:7px;cursor:pointer;border:1px solid #30363d;background:#21293a;color:#e8eaf0}
+#cr-bar button:hover{border-color:#58a6ff;color:#58a6ff}
+#cr-bar .cr-save-btn{background:#58a6ff;color:#000;border-color:#58a6ff}
+#cr-bar .cr-save-btn:hover{background:#7dbfff}
+#cr-bar .cr-hint{font-size:11px;color:#8b949e;margin-left:auto}
+#cr-toast{position:fixed;bottom:54px;left:50%;transform:translateX(-50%);background:#1f2330;color:#e8eaf0;padding:8px 16px;border-radius:8px;font:13px system-ui,sans-serif;z-index:100001;opacity:0;transition:opacity .2s;pointer-events:none}
+#cr-toast.cr-show{opacity:1}
+body.cr-has-panel{padding-right:calc(20% + 4px)}
+body{padding-bottom:52px}
+@media print{#cr-bubble,#cr-popover,#cr-panel,#cr-bar,#cr-toast{display:none!important}body{padding:0!important}}
+</style>
+
+<div id="cr-bubble"><button id="cr-bubble-btn">💬 Comment</button></div>
+<div id="cr-popover">
+  <div id="cr-popover-header"><span id="cr-popover-title">Comment</span><button id="cr-popover-close">✕</button></div>
+  <div id="cr-popover-quote"></div>
+  <textarea id="cr-popover-ta" placeholder="Your comment…"></textarea>
+  <div id="cr-popover-actions">
+    <button id="cr-popover-del" style="display:none">Delete</button>
+    <button id="cr-popover-cancel">Cancel</button>
+    <button id="cr-popover-save">Save</button>
+  </div>
+</div>
+<div id="cr-panel">
+  <div id="cr-panel-head"><span id="cr-panel-label">Comments</span><span id="cr-panel-count"></span></div>
+  <div id="cr-panel-body">
+    <div id="cr-panel-empty">Select text → 💬 Comment</div>
+    <div id="cr-panel-list"></div>
+  </div>
+</div>
+<div id="cr-bar">
+  <b>📝 Review</b><span class="cr-cnt" id="cr-cnt">0</span>
+  <input id="cr-reviewer" placeholder="Your name…" />
+  <button class="cr-save-btn" id="cr-save">💾 Save</button>
+  <button id="cr-clear">🗑 Clear all</button>
+  <span class="cr-hint">Select text → 💬 Comment</span>
+</div>
+<div id="cr-toast"></div>
+
+<script>
+(function(){
+"use strict";
+var DATA=document.getElementById('review-data');
+var LS='cr2:'+(location.pathname||document.title);
+var store={version:1,comments:[]};
+try{var emb=JSON.parse(DATA.textContent);if(emb&&emb.comments)store=emb;}catch(e){}
+try{var lsd=JSON.parse(localStorage.getItem(LS));if(lsd&&lsd.comments&&lsd.comments.length>=store.comments.length)store=lsd;}catch(e){}
+var fileHandle=null,pendingRange=null,pendingQuote=null,editingId=null;
+function uid(){return 'c'+Date.now().toString(36)+Math.random().toString(36).slice(2,6);}
+function nowStr(){return new Date().toLocaleString();}
+function esc(s){return String(s||'').replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
+function toast(m){var t=document.getElementById('cr-toast');t.textContent=m;t.classList.add('cr-show');setTimeout(function(){t.classList.remove('cr-show');},1800);}
+function persist(){try{localStorage.setItem(LS,JSON.stringify(store));}catch(e){}DATA.textContent=JSON.stringify(store,null,2);renderPanel();updateCount();}
+function nearestId(node){var el=node.nodeType===3?node.parentElement:node;while(el&&el!==document.body){if(el.id&&!el.id.startsWith('cr-'))return el.id;el=el.parentElement;}return'';}
+function applyHL(range,id,resolved){var span=document.createElement('span');span.className='cr-hl'+(resolved?' cr-resolved':'');span.setAttribute('data-cid',id);try{range.surroundContents(span);}catch(e){try{var f=range.extractContents();span.appendChild(f);range.insertNode(span);}catch(e2){return;}}span.addEventListener('click',function(){scrollPanel(id);});}
+function removeHL(id){document.querySelectorAll('.cr-hl[data-cid="'+id+'"]').forEach(function(s){var p=s.parentNode;while(s.firstChild)p.insertBefore(s.firstChild,s);p.removeChild(s);p.normalize();});}
+function restoreHLs(){store.comments.forEach(function(c){if(!c.quote)return;var root=(c.anchor&&document.getElementById(c.anchor))||document.body;var walker=document.createTreeWalker(root,NodeFilter.SHOW_TEXT,{acceptNode:function(n){if(n.parentElement.closest('#cr-bubble,#cr-popover,#cr-panel,#cr-bar'))return NodeFilter.FILTER_REJECT;if(n.parentElement.classList.contains('cr-hl'))return NodeFilter.FILTER_REJECT;return n.nodeValue.indexOf(c.quote)>=0?NodeFilter.FILTER_ACCEPT:NodeFilter.FILTER_SKIP;}});var node=walker.nextNode();if(!node)return;var idx=node.nodeValue.indexOf(c.quote);var r=document.createRange();r.setStart(node,idx);r.setEnd(node,idx+c.quote.length);applyHL(r,c.id,c.status==='resolved');});}
+var bubble=document.getElementById('cr-bubble');
+document.addEventListener('mouseup',function(e){if(e.target.closest('#cr-bubble,#cr-popover,#cr-panel,#cr-bar'))return;setTimeout(function(){var sel=window.getSelection();if(!sel||sel.isCollapsed||sel.toString().trim().length<2){hideBubble();return;}var r=sel.getRangeAt(0).getBoundingClientRect();var bw=160,bh=34,left=r.left+r.width/2-bw/2,top=r.top-bh-8;if(top<8)top=r.bottom+8;left=Math.max(8,Math.min(left,window.innerWidth-bw-8));bubble.style.left=left+'px';bubble.style.top=top+'px';bubble.classList.add('cr-open');},10);});
+document.addEventListener('mousedown',function(e){if(!e.target.closest('#cr-bubble')&&!e.target.closest('#cr-popover'))hideBubble();});
+function hideBubble(){bubble.classList.remove('cr-open');}
+document.getElementById('cr-bubble-btn').addEventListener('click',function(){var sel=window.getSelection();if(!sel||sel.isCollapsed)return;pendingRange=sel.getRangeAt(0).cloneRange();pendingQuote=sel.toString().trim().slice(0,250);editingId=null;hideBubble();sel.removeAllRanges();openPopover(pendingQuote,'',false);});
+var popover=document.getElementById('cr-popover');
+function openPopover(quote,text,showDel){document.getElementById('cr-popover-quote').textContent=quote.length>100?quote.slice(0,100)+'…':quote;document.getElementById('cr-popover-ta').value=text;document.getElementById('cr-popover-del').style.display=showDel?'inline-block':'none';popover.style.left=Math.max(8,(window.innerWidth-320)/2)+'px';popover.style.top=Math.max(8,(window.innerHeight-280)/2)+'px';popover.classList.add('cr-open');document.getElementById('cr-popover-ta').focus();}
+function closePopover(){popover.classList.remove('cr-open');pendingRange=null;pendingQuote=null;editingId=null;}
+document.getElementById('cr-popover-close').addEventListener('click',closePopover);
+document.getElementById('cr-popover-cancel').addEventListener('click',closePopover);
+document.getElementById('cr-popover-save').addEventListener('click',function(){var text=document.getElementById('cr-popover-ta').value.trim();if(!text){closePopover();return;}var reviewer=document.getElementById('cr-reviewer').value.trim()||'Reviewer';var ts=nowStr();if(editingId){var c=store.comments.find(function(x){return x.id===editingId;});if(c){c.text=text;c.reviewer=reviewer;c.ts=ts;removeHL(editingId);reHL(c);}}else{var id=uid();var anchor=pendingRange?nearestId(pendingRange.startContainer):'';store.comments.push({id:id,quote:pendingQuote||'',text:text,reviewer:reviewer,ts:ts,anchor:anchor,status:'open'});if(pendingRange)applyHL(pendingRange,id,false);}persist();closePopover();});
+document.getElementById('cr-popover-del').addEventListener('click',function(){if(!editingId)return;removeHL(editingId);store.comments=store.comments.filter(function(x){return x.id!==editingId;});persist();closePopover();});
+function reHL(c){if(!c.quote)return;var root=(c.anchor&&document.getElementById(c.anchor))||document.body;var walker=document.createTreeWalker(root,NodeFilter.SHOW_TEXT,{acceptNode:function(n){if(n.parentElement.closest('#cr-bubble,#cr-popover,#cr-panel,#cr-bar'))return NodeFilter.FILTER_REJECT;if(n.parentElement.classList.contains('cr-hl'))return NodeFilter.FILTER_REJECT;return n.nodeValue.indexOf(c.quote)>=0?NodeFilter.FILTER_ACCEPT:NodeFilter.FILTER_SKIP;}});var node=walker.nextNode();if(!node)return;var idx=node.nodeValue.indexOf(c.quote);var r=document.createRange();r.setStart(node,idx);r.setEnd(node,idx+c.quote.length);applyHL(r,c.id,c.status==='resolved');}
+function makeItem(c,n){var div=document.createElement('div');div.className='cr-item'+(c.status==='resolved'?' cr-arch':'');div.setAttribute('data-cid',c.id);var rb=c.status==='resolved'?'<span class="cr-item-reopen" data-act="reopen">reopen</span>':'<span class="cr-item-resolve" data-act="resolve">resolve</span>';div.innerHTML='<div class="cr-item-n">#'+n+'</div>'+(c.quote?'<div class="cr-item-q">'+esc(c.quote.slice(0,90))+(c.quote.length>90?'…':'')+'</div>':'')+'<div class="cr-item-t">'+esc(c.text)+'</div>'+'<div class="cr-item-m">'+esc(c.reviewer)+' · '+esc(c.ts)+'</div>'+'<div class="cr-item-acts">'+rb+'<span class="cr-item-del" data-act="del">delete</span></div>';if(c.quote)div.querySelector('.cr-item-q').addEventListener('click',function(){scrollToHL(c.id);});div.querySelector('.cr-item-t').addEventListener('click',function(){editComment(c.id);});div.querySelector('.cr-item-del').addEventListener('click',function(e){e.stopPropagation();removeHL(c.id);store.comments=store.comments.filter(function(x){return x.id!==c.id;});persist();});div.querySelector('[data-act="resolve"],[data-act="reopen"]').addEventListener('click',function(e){e.stopPropagation();c.status=c.status==='resolved'?'open':'resolved';removeHL(c.id);reHL(c);persist();});return div;}
+function renderPanel(){var panel=document.getElementById('cr-panel');var empty=document.getElementById('cr-panel-empty');var list=document.getElementById('cr-panel-list');var cnt=document.getElementById('cr-panel-count');if(!store.comments.length){panel.classList.remove('cr-has');document.body.classList.remove('cr-has-panel');empty.style.display='block';list.innerHTML='';cnt.textContent='';return;}panel.classList.add('cr-has');document.body.classList.add('cr-has-panel');empty.style.display='none';cnt.textContent=store.comments.length;list.innerHTML='';var open=store.comments.filter(function(c){return c.status!=='resolved';});var arch=store.comments.filter(function(c){return c.status==='resolved';});var n=0;open.forEach(function(c){list.appendChild(makeItem(c,++n));});if(arch.length){var h=document.createElement('div');h.className='cr-panel-section';h.textContent='Archived ('+arch.length+')';list.appendChild(h);arch.forEach(function(c){list.appendChild(makeItem(c,++n));});}}
+function scrollPanel(id){var el=document.querySelector('#cr-panel-list .cr-item[data-cid="'+id+'"]');if(el)el.scrollIntoView({block:'nearest'});}
+function scrollToHL(id){var el=document.querySelector('.cr-hl[data-cid="'+id+'"]');if(el)el.scrollIntoView({behavior:'smooth',block:'center'});}
+function editComment(id){var c=store.comments.find(function(x){return x.id===id;});if(!c)return;editingId=id;pendingRange=null;pendingQuote=c.quote;openPopover(c.quote,c.text,true);}
+function updateCount(){document.getElementById('cr-cnt').textContent=store.comments.length;}
+function buildOutput(){DATA.textContent=JSON.stringify(store,null,2);var summary=store.comments.map(function(c){return'[#'+(c.anchor||'-')+'] ('+c.status+') quote="'+(c.quote||'').replace(/"/g,"'").slice(0,80)+'" :: '+c.text.replace(/\n/g,' ');}).join('\n');return'<!DOCTYPE html>\n<!-- CLAUDE-REVIEW-COMMENTS\n'+summary+'\nEND-CLAUDE-REVIEW-COMMENTS -->\n'+document.documentElement.outerHTML;}
+function download(out){var b=new Blob([out],{type:'text/html'});var a=document.createElement('a');a.href=URL.createObjectURL(b);a.download=location.pathname.split('/').pop()||'review.html';document.body.appendChild(a);a.click();a.remove();toast('Downloaded — replace original with this file');}
+document.getElementById('cr-save').addEventListener('click',async function(){var out=buildOutput();try{if(!fileHandle&&window.showSaveFilePicker)fileHandle=await window.showSaveFilePicker({suggestedName:location.pathname.split('/').pop()||'review.html',types:[{description:'HTML',accept:{'text/html':['.html']}}]});if(fileHandle){var w=await fileHandle.createWritable();await w.write(out);await w.close();toast('Saved ✓');return;}}catch(e){}download(out);});
+document.getElementById('cr-clear').addEventListener('click',function(){if(!confirm('Delete all comments?'))return;store.comments.forEach(function(c){removeHL(c.id);});store.comments=[];persist();});
+var rvField=document.getElementById('cr-reviewer');rvField.value=store.reviewer||'';rvField.addEventListener('input',function(){store.reviewer=rvField.value.trim();try{localStorage.setItem(LS,JSON.stringify(store));}catch(e){}DATA.textContent=JSON.stringify(store,null,2);});
+restoreHLs();renderPanel();updateCount();
+})();
+</script>
+<!-- ============ END CLAUDE REVIEW WIDGET ============ -->
+
+</body>
+</html>
