@@ -152,6 +152,24 @@
       gap: var(--s3);
     }
 
+    .hero__photo {
+      display: block;
+      width: 140px;
+      height: 140px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 4px solid #fff;
+      box-shadow: 0 0 0 3px var(--sage), var(--shadow);
+      margin-bottom: var(--s4);
+    }
+
+    @media (max-width: 640px) {
+      .hero__photo {
+        width: 110px;
+        height: 110px;
+      }
+    }
+
     /* ── Metrics ────────────────────────────────────────── */
     .metrics-grid {
       display: grid;
@@ -449,6 +467,7 @@
 ═══════════════════════════════════════════════════════ -->
 <section class="hero section" id="hero">
   <div class="container reveal">
+    <img class="hero__photo" src="assets/img/yurii.png" alt="Yurii Babii" width="140" height="140" loading="eager">
     <h1>Yurii Babii</h1>
     <p class="hero__tagline">Lead Android Engineer</p>
     <p class="hero__pitch">8+ years shipping reliable, user-centric mobile products — and building the teams and processes behind them.</p>
