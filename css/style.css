@@ -1,0 +1,228 @@
+/* ============================================================
+   Design system — calm/warm palette, Fraunces + Inter
+   ============================================================ */
+
+/* 1. Custom properties */
+:root {
+  --bg:     #FAF8F4;
+  --text:   #2B2A27;
+  --sage:   #6E8B74;
+  --clay:   #C0855F;
+  --muted:  #8A8880;
+  --maxw:   1040px;
+
+  /* Spacing scale */
+  --s1: 0.25rem;
+  --s2: 0.5rem;
+  --s3: 1rem;
+  --s4: 1.5rem;
+  --s5: 2.5rem;
+  --s6: 4rem;
+
+  /* Radius & shadow */
+  --r:      0.75rem;
+  --shadow: 0 2px 12px rgba(43, 42, 39, 0.08);
+}
+
+/* 2. Reset */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: Inter, system-ui, sans-serif;
+  line-height: 1.6;
+}
+
+/* 3. Headings */
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Fraunces', Georgia, serif;
+  line-height: 1.1;
+  font-weight: 600;
+}
+
+h1 {
+  font-size: clamp(2rem, 5vw + 1rem, 3.75rem);
+}
+
+h2 {
+  font-size: clamp(1.5rem, 3vw + 0.75rem, 2.5rem);
+}
+
+h3 {
+  font-size: 1.25rem;
+}
+
+/* 4. Container */
+.container {
+  max-width: var(--maxw, 1040px);
+  margin-inline: auto;
+  padding-inline: clamp(1rem, 4vw, 2rem);
+}
+
+/* 5. Section */
+.section {
+  padding-block: clamp(3rem, 8vw, 6rem);
+}
+
+/* 6. Buttons */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s2);
+  padding: var(--s2) var(--s4);
+  border-radius: 999px;
+  border: 1.5px solid var(--text);
+  background: transparent;
+  color: var(--text);
+  font-family: Inter, system-ui, sans-serif;
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  text-decoration: none;
+  transition: opacity 0.2s, transform 0.2s;
+}
+
+.btn:hover {
+  opacity: 0.75;
+  transform: translateY(-1px);
+}
+
+.btn-primary {
+  background: var(--sage);
+  border-color: var(--sage);
+  color: #fff;
+}
+
+.btn-primary:hover {
+  opacity: 0.85;
+  transform: translateY(-1px);
+}
+
+/* 7. Chip */
+.chip {
+  display: inline-block;
+  padding: var(--s1) var(--s3);
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--sage) 15%, var(--bg));
+  color: var(--text);
+  font-size: 0.8rem;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+/* 8. Card */
+.card {
+  border-radius: var(--r);
+  background: #fff;
+  box-shadow: var(--shadow);
+  padding: var(--s4);
+  transition: transform 0.25s, box-shadow 0.25s;
+}
+
+.card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 24px rgba(43, 42, 39, 0.12);
+}
+
+a.card {
+  text-decoration: none;
+  color: inherit;
+}
+
+/* 9. Metric */
+.metric {
+  display: grid;
+  place-items: center;
+  text-align: center;
+  padding: var(--s4);
+  border-radius: var(--r);
+  background: #fff;
+  box-shadow: var(--shadow);
+}
+
+.metric__num {
+  font-family: 'Fraunces', Georgia, serif;
+  font-size: clamp(2rem, 4vw, 3rem);
+  font-weight: 700;
+  line-height: 1;
+  color: var(--clay);
+}
+
+/* 10. Timeline */
+.timeline {
+  position: relative;
+  padding-left: var(--s5);
+}
+
+.timeline::before {
+  content: '';
+  position: absolute;
+  left: calc(var(--s3) - 0.5px);
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background: color-mix(in srgb, var(--sage) 40%, var(--bg));
+}
+
+.timeline__item {
+  position: relative;
+  padding-bottom: var(--s5);
+}
+
+.timeline__item:last-child {
+  padding-bottom: 0;
+}
+
+.timeline__item::before {
+  content: '';
+  position: absolute;
+  left: calc(-1 * var(--s5) + var(--s3) - 5px);
+  top: 0.35em;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--sage);
+  border: 2px solid var(--bg);
+  box-shadow: 0 0 0 1.5px var(--sage);
+}
+
+/* 11. Reveal animation */
+.reveal {
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity 0.6s, transform 0.6s;
+}
+
+.reveal.is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+/* 12. Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+/* 13. Responsive — grids collapse to 1 col under 640px */
+@media (max-width: 640px) {
+  .metric,
+  [class*="grid"] {
+    grid-template-columns: 1fr !important;
+  }
+}
