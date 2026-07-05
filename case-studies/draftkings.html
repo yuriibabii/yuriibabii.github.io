@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DraftKings — Case Study — Yurii Babii</title>
+  <meta name="description" content="Senior Software Engineer at DraftKings — native Android reliability at Super Bowl scale: 12M+ bets handled, 2.5M users, ~59K bets/min peak." />
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="DraftKings — Case Study — Yurii Babii" />
+  <meta property="og:description" content="Native Android reliability at Super Bowl scale — Kotlin, Jetpack Compose, WebSockets, Perfetto profiling." />
+  <meta property="og:type" content="article" />
+  <meta property="og:url" content="https://yuriibabii.github.io/case-studies/draftkings.html" />
+  <meta property="og:image" content="../assets/og-image.png" />
+
+  <!-- Favicon -->
+  <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml" />
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600&family=Inter:wght@400;500;600&display=swap" />
+
+  <!-- Shared styles -->
+  <link rel="stylesheet" href="../css/style.css" />
+
+  <style>
+    /* ── Back link ─────────────────────────────────────── */
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 0.875rem;
+      font-weight: 500;
+      padding-block: var(--s4);
+      transition: color 0.2s;
+    }
+    .back-link:hover { color: var(--text); }
+    .back-link::before { content: '←'; }
+
+    /* ── Hero ──────────────────────────────────────────── */
+    .cs-hero {
+      padding-block: clamp(2.5rem, 7vw, 5rem) clamp(2rem, 5vw, 3.5rem);
+      border-bottom: 1px solid color-mix(in srgb, var(--text) 8%, transparent);
+    }
+
+    .cs-hero__eyebrow {
+      font-size: 0.8rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--clay);
+      margin-bottom: var(--s3);
+    }
+
+    .cs-hero h1 {
+      margin-bottom: var(--s3);
+    }
+
+    .cs-hero__meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--s3);
+      align-items: center;
+      margin-bottom: var(--s4);
+      font-size: 0.9rem;
+      color: var(--muted);
+    }
+
+    .cs-hero__meta span {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+    }
+
+    .cs-hero__chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--s2);
+      margin-bottom: var(--s4);
+    }
+
+    .cs-hero__sub {
+      font-size: 1.1rem;
+      line-height: 1.65;
+      color: var(--muted);
+      max-width: 640px;
+    }
+
+    /* ── Section headings ──────────────────────────────── */
+    .cs-section-label {
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--sage);
+      margin-bottom: var(--s3);
+    }
+
+    /* ── Context ───────────────────────────────────────── */
+    .cs-context-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--s4);
+    }
+
+    @media (max-width: 680px) {
+      .cs-context-grid { grid-template-columns: 1fr; }
+    }
+
+    .cs-context-card {
+      padding: var(--s4);
+      border-radius: var(--r);
+      background: #fff;
+      box-shadow: var(--shadow);
+    }
+
+    .cs-context-card h3 {
+      font-size: 1rem;
+      margin-bottom: var(--s2);
+      color: var(--clay);
+    }
+
+    .cs-context-card p {
+      font-size: 0.925rem;
+      color: var(--muted);
+      line-height: 1.65;
+    }
+
+    /* ── What I did ────────────────────────────────────── */
+    .cs-actions {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: var(--s4);
+    }
+
+    .cs-action-card {
+      padding: var(--s4);
+      border-radius: var(--r);
+      background: #fff;
+      box-shadow: var(--shadow);
+    }
+
+    .cs-action-card__icon {
+      font-size: 1.4rem;
+      margin-bottom: var(--s2);
+    }
+
+    .cs-action-card h3 {
+      font-size: 1rem;
+      margin-bottom: var(--s2);
+    }
+
+    .cs-action-card p {
+      font-size: 0.9rem;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    /* ── Metrics grid ──────────────────────────────────── */
+    .metrics-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--s4);
+    }
+
+    @media (max-width: 800px) {
+      .metrics-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    @media (max-width: 400px) {
+      .metrics-grid { grid-template-columns: 1fr; }
+    }
+
+    .metric__label {
+      font-size: 0.8rem;
+      color: var(--muted);
+      margin-top: var(--s2);
+      font-weight: 500;
+    }
+
+    .metrics-caption {
+      margin-top: var(--s3);
+      font-size: 0.8rem;
+      color: var(--muted);
+      text-align: center;
+    }
+
+    /* ── Highlights callout grid ───────────────────────── */
+    .highlights-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: var(--s4);
+    }
+
+    @media (max-width: 680px) {
+      .highlights-grid { grid-template-columns: 1fr; }
+    }
+
+    .highlight-card {
+      padding: var(--s5);
+      border-radius: var(--r);
+      background: #fff;
+      box-shadow: var(--shadow);
+      border-left: 3px solid var(--clay);
+      display: flex;
+      flex-direction: column;
+      gap: var(--s2);
+    }
+
+    .highlight-card__icon {
+      font-size: 1.6rem;
+      line-height: 1;
+    }
+
+    .highlight-card__title {
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    .highlight-card__body {
+      font-size: 0.9rem;
+      color: var(--muted);
+      line-height: 1.65;
+    }
+
+    .highlight-card__tag {
+      display: inline-block;
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+      color: var(--clay);
+      background: color-mix(in srgb, var(--clay) 10%, transparent);
+      border-radius: 4px;
+      padding: 2px 8px;
+      margin-top: var(--s1);
+      align-self: flex-start;
+    }
+
+    /* ── Tech stack callouts ───────────────────────────── */
+    .tech-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: var(--s4);
+    }
+
+    .tech-card {
+      padding: var(--s4);
+      border-radius: var(--r);
+      border: 1px solid color-mix(in srgb, var(--sage) 25%, transparent);
+      background: color-mix(in srgb, var(--sage) 4%, var(--bg));
+    }
+
+    .tech-card h3 {
+      font-size: 0.95rem;
+      color: var(--sage);
+      margin-bottom: var(--s2);
+    }
+
+    .tech-card p {
+      font-size: 0.875rem;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    /* ── Footer ────────────────────────────────────────── */
+    .cs-footer {
+      border-top: 1px solid color-mix(in srgb, var(--text) 8%, transparent);
+      padding-block: var(--s5);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Back link -->
+  <div class="container">
+    <a class="back-link" href="../index.html">Yurii Babii</a>
+  </div>
+
+  <!-- ── Hero ──────────────────────────────────────────── -->
+  <header class="cs-hero">
+    <div class="container">
+      <p class="cs-hero__eyebrow">Case Study</p>
+      <h1>DraftKings</h1>
+      <div class="cs-hero__meta">
+        <span>Senior Software Engineer</span>
+        <span>·</span>
+        <span>Oct 2021 – Present</span>
+      </div>
+      <div class="cs-hero__chips">
+        <span class="chip">Kotlin</span>
+        <span class="chip">Jetpack Compose</span>
+        <span class="chip">Coroutines/Flows</span>
+        <span class="chip">MVVM</span>
+        <span class="chip">WebSockets</span>
+        <span class="chip">Perfetto</span>
+      </div>
+      <p class="cs-hero__sub">Native Android reliability at Super Bowl scale.</p>
+    </div>
+  </header>
+
+  <!-- ── Context / Problem ──────────────────────────────── -->
+  <section class="section" id="sec-context">
+    <div class="container">
+      <p class="cs-section-label reveal">Context &amp; Problem</p>
+      <div class="cs-context-grid reveal">
+        <div class="cs-context-card">
+          <h3>The shift to native</h3>
+          <p>DraftKings made a deliberate move away from cross-platform approaches toward native Android — prioritizing platform fidelity, performance, and long-term maintainability. The bet: native quality compounds over time in ways that hybrid can't match.</p>
+        </div>
+        <div class="cs-context-card">
+          <h3>The stakes</h3>
+          <p>Real-money sports betting means reliability is non-negotiable. A crash or stall during a live in-game wager isn't a UX inconvenience — it's a lost bet, a support ticket, and a dent in user trust. The system has to hold under Super Bowl load.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── What I Did ─────────────────────────────────────── -->
+  <section class="section" id="sec-actions" style="background:#fff;">
+    <div class="container">
+      <p class="cs-section-label reveal">What I Did</p>
+      <div class="cs-actions">
+        <div class="cs-action-card reveal">
+          <div class="cs-action-card__icon">🛡️</div>
+          <h3>Hardened reliability</h3>
+          <p>Drove crash-free session rates up and kept them there. Owned on-call rotation for Android — diagnosing and resolving incidents under live betting load with no tolerance for extended downtime.</p>
+        </div>
+        <div class="cs-action-card reveal">
+          <div class="cs-action-card__icon">📡</div>
+          <h3>Performance &amp; observability</h3>
+          <p>Instrumented the Android app end-to-end for performance visibility. Built Perfetto traces to identify CPU/render bottlenecks. Established metrics that gave the team signal before users noticed degradation.</p>
+        </div>
+        <div class="cs-action-card reveal">
+          <div class="cs-action-card__icon">⚡</div>
+          <h3>Operated under peak load</h3>
+          <p>Shipped and maintained features that ran in production through Super Bowl — the single highest-traffic event in the sports betting calendar. Scale is not theoretical; the system has been tested at ~59K bets/min.</p>
+        </div>
+        <div class="cs-action-card reveal">
+          <div class="cs-action-card__icon">🏗️</div>
+          <h3>Native Android craft</h3>
+          <p>Delivered production features in Jetpack Compose, wired real-time odds and bet updates through WebSocket streams, managed concurrency via coroutines/flows, and kept the architecture clean in an MVVM pattern at scale.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Impact ─────────────────────────────────────────── -->
+  <section class="section" id="sec-impact">
+    <div class="container">
+      <p class="cs-section-label reveal">Impact</p>
+      <div class="metrics-grid reveal">
+        <div class="metric">
+          <span class="metric__num">12M+</span>
+          <span class="metric__label">bets handled</span>
+        </div>
+        <div class="metric">
+          <span class="metric__num">2.5M</span>
+          <span class="metric__label">users</span>
+        </div>
+        <div class="metric">
+          <span class="metric__num" data-count="59" data-prefix="~" data-suffix="K/min"></span>
+          <span class="metric__label">Super Bowl peak</span>
+        </div>
+      </div>
+      <p class="metrics-caption">Production scale — DraftKings Android Sportsbook</p>
+    </div>
+  </section>
+
+  <!-- ── Highlights ─────────────────────────────────────── -->
+  <section class="section" id="sec-highlights" style="background:#fff;">
+    <div class="container">
+      <p class="cs-section-label reveal">Highlights</p>
+      <div class="highlights-grid reveal">
+        <div class="highlight-card">
+          <div class="highlight-card__icon">🛡️</div>
+          <div class="highlight-card__title">Reliability</div>
+          <div class="highlight-card__body">Hardened crash-free session rates across the Android Sportsbook. Systematic root-cause work — symbolication, trace analysis, regression detection — kept stability high under continuous feature velocity.</div>
+          <span class="highlight-card__tag">Stability</span>
+        </div>
+        <div class="highlight-card">
+          <div class="highlight-card__icon">🚨</div>
+          <div class="highlight-card__title">On-call Response</div>
+          <div class="highlight-card__body">Rotated on-call for live Android incidents during active betting windows. Learned to triage fast under pressure — distinguish crash vs. network vs. backend root cause — and resolve without a rollback when possible.</div>
+          <span class="highlight-card__tag">Incident Response</span>
+        </div>
+        <div class="highlight-card">
+          <div class="highlight-card__icon">🏟️</div>
+          <div class="highlight-card__title">Super Bowl Scale</div>
+          <div class="highlight-card__body">Features shipped and held through Super Bowl — the peak stress test for any US sportsbook. ~59K bets per minute at load, 2.5M concurrent users. The system did not flinch.</div>
+          <span class="highlight-card__tag">Peak Load</span>
+        </div>
+        <div class="highlight-card">
+          <div class="highlight-card__icon">📶</div>
+          <div class="highlight-card__title">Real-time</div>
+          <div class="highlight-card__body">Live odds, in-play bet updates, and market state driven through persistent WebSocket connections. Concurrency managed via Kotlin coroutines and flows so the UI stays responsive while the stream never lags.</div>
+          <span class="highlight-card__tag">WebSockets</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Tech callouts ──────────────────────────────────── -->
+  <section class="section" id="sec-tech">
+    <div class="container">
+      <p class="cs-section-label reveal">Technical Highlights</p>
+      <div class="tech-grid reveal">
+        <div class="tech-card">
+          <h3>Jetpack Compose — declarative UI</h3>
+          <p>Production Compose UI across Sportsbook features. Leveraged composable reuse, state hoisting, and side-effect APIs to keep UI logic clean and testable as the surface area grew.</p>
+        </div>
+        <div class="tech-card">
+          <h3>Coroutines/Flows — concurrency</h3>
+          <p>Structured concurrency via coroutines for all async work; StateFlow/SharedFlow for reactive UI state. Eliminated callback hell and made back-pressure handling predictable under bursty network conditions.</p>
+        </div>
+        <div class="tech-card">
+          <h3>WebSockets — real-time</h3>
+          <p>Persistent WebSocket connections deliver live odds, market state, and bet confirmations. Handled reconnect logic, back-off strategy, and ensuring the UI reflects the latest server state without drift.</p>
+        </div>
+        <div class="tech-card">
+          <h3>Perfetto — profiling</h3>
+          <p>Used Perfetto system traces to surface jank, long frames, and CPU pressure in the Sportsbook app. Traced method-level timings to pinpoint bottlenecks that were invisible in high-level metrics alone.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Footer / back link ────────────────────────────── -->
+  <footer class="cs-footer container" id="sec-footer">
+    <a class="btn btn-primary" href="../index.html">← Back to Yurii Babii</a>
+  </footer>
+
+  <!-- JS -->
+  <script src="../js/main.js"></script>
+
+<!-- ============ CLAUDE REVIEW WIDGET — do not remove or rename ids ============ -->
+<script id="review-data" type="application/json">{"version":1,"comments":[]}</script>
+<style>
+#cr-bubble{position:fixed;z-index:100000;background:#1f2330;border:1px solid rgba(88,166,255,.5);border-radius:8px;padding:4px;display:none;box-shadow:0 4px 16px rgba(0,0,0,.5)}
+#cr-bubble.cr-open{display:flex}
+#cr-bubble-btn{font-size:12px;padding:5px 12px;border-radius:6px;cursor:pointer;border:none;background:transparent;color:#e8eaf0;white-space:nowrap}
+#cr-bubble-btn:hover{background:rgba(88,166,255,.2);color:#58a6ff}
+#cr-popover{position:fixed;z-index:99999;width:320px;background:#1e2736;border:1px solid rgba(88,166,255,.4);border-radius:12px;box-shadow:0 8px 32px rgba(0,0,0,.6);padding:14px;display:none;font:13px/1.5 system-ui,sans-serif}
+#cr-popover.cr-open{display:block}
+#cr-popover-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
+#cr-popover-title{font-size:11px;font-weight:600;color:#58a6ff;text-transform:uppercase;letter-spacing:.05em}
+#cr-popover-close{cursor:pointer;color:#8b949e;font-size:15px;padding:2px 6px;border-radius:5px;border:none;background:none}
+#cr-popover-close:hover{background:#21293a;color:#e8eaf0}
+#cr-popover-quote{font-size:11px;font-style:italic;color:#bc8cff;border-left:2px solid #bc8cff;padding-left:7px;margin-bottom:10px;max-height:48px;overflow:hidden}
+#cr-popover textarea{width:100%;box-sizing:border-box;min-height:80px;resize:vertical;background:#21293a;border:1px solid #30363d;border-radius:7px;color:#e8eaf0;font:inherit;padding:7px 9px;outline:none}
+#cr-popover textarea:focus{border-color:#58a6ff}
+#cr-popover-actions{display:flex;gap:6px;margin-top:8px;justify-content:flex-end}
+#cr-popover-actions button{font-size:12px;padding:5px 12px;border-radius:7px;cursor:pointer;border:1px solid #30363d;background:#21293a;color:#e8eaf0}
+#cr-popover-actions button:hover{border-color:#58a6ff;color:#58a6ff}
+#cr-popover-save{background:#58a6ff!important;color:#000!important;border-color:#58a6ff!important}
+#cr-popover-save:hover{background:#7dbfff!important}
+#cr-popover-del{color:#f85149!important;border-color:rgba(248,81,73,.35)!important}
+#cr-popover-del:hover{background:rgba(248,81,73,.1)!important}
+.cr-hl{background:rgba(188,140,255,.2);border-bottom:2px solid #bc8cff;cursor:pointer;border-radius:2px}
+.cr-hl:hover{background:rgba(188,140,255,.35)}
+.cr-hl.cr-resolved{background:rgba(63,185,80,.15);border-bottom-color:#3fb950;opacity:.7}
+#cr-panel{position:fixed;top:0;right:0;bottom:44px;width:20%;min-width:200px;max-width:300px;background:transparent;display:flex;flex-direction:column;z-index:99998;pointer-events:none;transition:background .2s}
+#cr-panel.cr-has{background:rgba(13,17,23,.92);border-left:1px solid #30363d;pointer-events:all}
+#cr-panel-head{padding:10px 12px 7px;border-bottom:1px solid #30363d;display:flex;align-items:center;flex-shrink:0}
+#cr-panel-label{font-size:11px;font-weight:600;color:#8b949e;text-transform:uppercase;letter-spacing:.05em;font:11px/1.2 system-ui,sans-serif}
+#cr-panel-count{font-size:13px;font-weight:700;color:#bc8cff;margin-left:auto}
+#cr-panel-body{flex:1;overflow-y:auto;padding:6px 0}
+#cr-panel-body::-webkit-scrollbar{width:3px}
+#cr-panel-body::-webkit-scrollbar-thumb{background:#30363d;border-radius:3px}
+#cr-panel-empty{font-size:12px;color:#8b949e;padding:14px 12px;line-height:1.5;display:none}
+.cr-item{padding:9px 12px;border-bottom:1px solid rgba(48,54,61,.5);transition:background .1s}
+.cr-item:hover{background:rgba(88,166,255,.05)}
+.cr-item-n{font-size:10px;color:#8b949e;margin-bottom:3px;font:10px/1.2 system-ui,sans-serif}
+.cr-item-q{font-size:11px;font-style:italic;color:#bc8cff;border-left:2px solid #bc8cff;padding-left:5px;margin-bottom:4px;cursor:pointer;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.cr-item-q:hover{color:#d4a8ff}
+.cr-item-t{font-size:12px;color:#e8eaf0;line-height:1.4;cursor:pointer}
+.cr-item-t:hover{color:#58a6ff}
+.cr-item-m{font-size:10px;color:#8b949e;margin-top:3px;font:10px/1.2 system-ui,sans-serif}
+.cr-item-acts{margin-top:4px;display:flex;gap:6px}
+.cr-item-del{font-size:10px;color:#f85149;cursor:pointer;padding:1px 6px;border-radius:4px;border:1px solid rgba(248,81,73,.25);background:none}
+.cr-item-del:hover{background:rgba(248,81,73,.1)}
+.cr-item-resolve{font-size:10px;color:#3fb950;cursor:pointer;padding:1px 6px;border-radius:4px;border:1px solid rgba(63,185,80,.35);background:none}
+.cr-item-resolve:hover{background:rgba(63,185,80,.12)}
+.cr-item-reopen{font-size:10px;color:#8b949e;cursor:pointer;padding:1px 6px;border-radius:4px;border:1px solid rgba(139,148,158,.3);background:none}
+.cr-item-reopen:hover{background:rgba(139,148,158,.12)}
+.cr-item.cr-arch{opacity:.5}
+.cr-item.cr-arch:hover{opacity:.85}
+.cr-panel-section{font:10px/1.2 system-ui,sans-serif;font-weight:600;color:#8b949e;text-transform:uppercase;letter-spacing:.05em;padding:9px 12px 4px;border-top:1px solid #30363d;border-bottom:1px solid rgba(48,54,61,.5)}
+#cr-bar{position:fixed;bottom:0;left:0;right:0;height:44px;background:#1a2030;border-top:1px solid #30363d;display:flex;align-items:center;gap:12px;padding:0 16px;font:12px/1.4 system-ui,sans-serif;z-index:99997}
+#cr-bar b{font-size:13px;font-weight:600;color:#e8eaf0}
+#cr-bar .cr-cnt{font-size:18px;font-weight:700;color:#bc8cff}
+#cr-bar input{font-size:12px;padding:4px 9px;border-radius:7px;border:1px solid #30363d;background:#21293a;color:#e8eaf0;outline:none;width:150px;font:inherit}
+#cr-bar input:focus{border-color:#58a6ff}
+#cr-bar button{font-size:12px;padding:5px 14px;border-radius:7px;cursor:pointer;border:1px solid #30363d;background:#21293a;color:#e8eaf0}
+#cr-bar button:hover{border-color:#58a6ff;color:#58a6ff}
+#cr-bar .cr-save-btn{background:#58a6ff;color:#000;border-color:#58a6ff}
+#cr-bar .cr-save-btn:hover{background:#7dbfff}
+#cr-bar .cr-hint{font-size:11px;color:#8b949e;margin-left:auto}
+#cr-toast{position:fixed;bottom:54px;left:50%;transform:translateX(-50%);background:#1f2330;color:#e8eaf0;padding:8px 16px;border-radius:8px;font:13px system-ui,sans-serif;z-index:100001;opacity:0;transition:opacity .2s;pointer-events:none}
+#cr-toast.cr-show{opacity:1}
+body.cr-has-panel{padding-right:calc(20% + 4px)}
+body{padding-bottom:52px}
+@media print{#cr-bubble,#cr-popover,#cr-panel,#cr-bar,#cr-toast{display:none!important}body{padding:0!important}}
+</style>
+
+<div id="cr-bubble"><button id="cr-bubble-btn">💬 Comment</button></div>
+<div id="cr-popover">
+  <div id="cr-popover-header"><span id="cr-popover-title">Comment</span><button id="cr-popover-close">✕</button></div>
+  <div id="cr-popover-quote"></div>
+  <textarea id="cr-popover-ta" placeholder="Your comment…"></textarea>
+  <div id="cr-popover-actions">
+    <button id="cr-popover-del" style="display:none">Delete</button>
+    <button id="cr-popover-cancel">Cancel</button>
+    <button id="cr-popover-save">Save</button>
+  </div>
+</div>
+<div id="cr-panel">
+  <div id="cr-panel-head"><span id="cr-panel-label">Comments</span><span id="cr-panel-count"></span></div>
+  <div id="cr-panel-body">
+    <div id="cr-panel-empty">Select text → 💬 Comment</div>
+    <div id="cr-panel-list"></div>
+  </div>
+</div>
+<div id="cr-bar">
+  <b>📝 Review</b><span class="cr-cnt" id="cr-cnt">0</span>
+  <input id="cr-reviewer" placeholder="Your name…" />
+  <button class="cr-save-btn" id="cr-save">💾 Save</button>
+  <button id="cr-clear">🗑 Clear all</button>
+  <span class="cr-hint">Select text → 💬 Comment</span>
+</div>
+<div id="cr-toast"></div>
+
+<script>
+(function(){
+"use strict";
+var DATA=document.getElementById('review-data');
+var LS='cr2:'+(location.pathname||document.title);
+var store={version:1,comments:[]};
+try{var emb=JSON.parse(DATA.textContent);if(emb&&emb.comments)store=emb;}catch(e){}
+try{var lsd=JSON.parse(localStorage.getItem(LS));if(lsd&&lsd.comments&&lsd.comments.length>=store.comments.length)store=lsd;}catch(e){}
+var fileHandle=null,pendingRange=null,pendingQuote=null,editingId=null;
+function uid(){return 'c'+Date.now().toString(36)+Math.random().toString(36).slice(2,6);}
+function nowStr(){return new Date().toLocaleString();}
+function esc(s){return String(s||'').replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
+function toast(m){var t=document.getElementById('cr-toast');t.textContent=m;t.classList.add('cr-show');setTimeout(function(){t.classList.remove('cr-show');},1800);}
+function persist(){try{localStorage.setItem(LS,JSON.stringify(store));}catch(e){}DATA.textContent=JSON.stringify(store,null,2);renderPanel();updateCount();}
+function nearestId(node){var el=node.nodeType===3?node.parentElement:node;while(el&&el!==document.body){if(el.id&&!el.id.startsWith('cr-'))return el.id;el=el.parentElement;}return'';}
+function applyHL(range,id,resolved){var span=document.createElement('span');span.className='cr-hl'+(resolved?' cr-resolved':'');span.setAttribute('data-cid',id);try{range.surroundContents(span);}catch(e){try{var f=range.extractContents();span.appendChild(f);range.insertNode(span);}catch(e2){return;}}span.addEventListener('click',function(){scrollPanel(id);});}
+function removeHL(id){document.querySelectorAll('.cr-hl[data-cid="'+id+'"]').forEach(function(s){var p=s.parentNode;while(s.firstChild)p.insertBefore(s.firstChild,s);p.removeChild(s);p.normalize();});}
+function restoreHLs(){store.comments.forEach(function(c){if(!c.quote)return;var root=(c.anchor&&document.getElementById(c.anchor))||document.body;var walker=document.createTreeWalker(root,NodeFilter.SHOW_TEXT,{acceptNode:function(n){if(n.parentElement.closest('#cr-bubble,#cr-popover,#cr-panel,#cr-bar'))return NodeFilter.FILTER_REJECT;if(n.parentElement.classList.contains('cr-hl'))return NodeFilter.FILTER_REJECT;return n.nodeValue.indexOf(c.quote)>=0?NodeFilter.FILTER_ACCEPT:NodeFilter.FILTER_SKIP;}});var node=walker.nextNode();if(!node)return;var idx=node.nodeValue.indexOf(c.quote);var r=document.createRange();r.setStart(node,idx);r.setEnd(node,idx+c.quote.length);applyHL(r,c.id,c.status==='resolved');});}
+var bubble=document.getElementById('cr-bubble');
+document.addEventListener('mouseup',function(e){if(e.target.closest('#cr-bubble,#cr-popover,#cr-panel,#cr-bar'))return;setTimeout(function(){var sel=window.getSelection();if(!sel||sel.isCollapsed||sel.toString().trim().length<2){hideBubble();return;}var r=sel.getRangeAt(0).getBoundingClientRect();var bw=160,bh=34,left=r.left+r.width/2-bw/2,top=r.top-bh-8;if(top<8)top=r.bottom+8;left=Math.max(8,Math.min(left,window.innerWidth-bw-8));bubble.style.left=left+'px';bubble.style.top=top+'px';bubble.classList.add('cr-open');},10);});
+document.addEventListener('mousedown',function(e){if(!e.target.closest('#cr-bubble')&&!e.target.closest('#cr-popover'))hideBubble();});
+function hideBubble(){bubble.classList.remove('cr-open');}
+document.getElementById('cr-bubble-btn').addEventListener('click',function(){var sel=window.getSelection();if(!sel||sel.isCollapsed)return;pendingRange=sel.getRangeAt(0).cloneRange();pendingQuote=sel.toString().trim().slice(0,250);editingId=null;hideBubble();sel.removeAllRanges();openPopover(pendingQuote,'',false);});
+var popover=document.getElementById('cr-popover');
+function openPopover(quote,text,showDel){document.getElementById('cr-popover-quote').textContent=quote.length>100?quote.slice(0,100)+'…':quote;document.getElementById('cr-popover-ta').value=text;document.getElementById('cr-popover-del').style.display=showDel?'inline-block':'none';popover.style.left=Math.max(8,(window.innerWidth-320)/2)+'px';popover.style.top=Math.max(8,(window.innerHeight-280)/2)+'px';popover.classList.add('cr-open');document.getElementById('cr-popover-ta').focus();}
+function closePopover(){popover.classList.remove('cr-open');pendingRange=null;pendingQuote=null;editingId=null;}
+document.getElementById('cr-popover-close').addEventListener('click',closePopover);
+document.getElementById('cr-popover-cancel').addEventListener('click',closePopover);
+document.getElementById('cr-popover-save').addEventListener('click',function(){var text=document.getElementById('cr-popover-ta').value.trim();if(!text){closePopover();return;}var reviewer=document.getElementById('cr-reviewer').value.trim()||'Reviewer';var ts=nowStr();if(editingId){var c=store.comments.find(function(x){return x.id===editingId;});if(c){c.text=text;c.reviewer=reviewer;c.ts=ts;removeHL(editingId);reHL(c);}}else{var id=uid();var anchor=pendingRange?nearestId(pendingRange.startContainer):'';store.comments.push({id:id,quote:pendingQuote||'',text:text,reviewer:reviewer,ts:ts,anchor:anchor,status:'open'});if(pendingRange)applyHL(pendingRange,id,false);}persist();closePopover();});
+document.getElementById('cr-popover-del').addEventListener('click',function(){if(!editingId)return;removeHL(editingId);store.comments=store.comments.filter(function(x){return x.id!==editingId;});persist();closePopover();});
+function reHL(c){if(!c.quote)return;var root=(c.anchor&&document.getElementById(c.anchor))||document.body;var walker=document.createTreeWalker(root,NodeFilter.SHOW_TEXT,{acceptNode:function(n){if(n.parentElement.closest('#cr-bubble,#cr-popover,#cr-panel,#cr-bar'))return NodeFilter.FILTER_REJECT;if(n.parentElement.classList.contains('cr-hl'))return NodeFilter.FILTER_REJECT;return n.nodeValue.indexOf(c.quote)>=0?NodeFilter.FILTER_ACCEPT:NodeFilter.FILTER_SKIP;}});var node=walker.nextNode();if(!node)return;var idx=node.nodeValue.indexOf(c.quote);var r=document.createRange();r.setStart(node,idx);r.setEnd(node,idx+c.quote.length);applyHL(r,c.id,c.status==='resolved');}
+function makeItem(c,n){var div=document.createElement('div');div.className='cr-item'+(c.status==='resolved'?' cr-arch':'');div.setAttribute('data-cid',c.id);var rb=c.status==='resolved'?'<span class="cr-item-reopen" data-act="reopen">reopen</span>':'<span class="cr-item-resolve" data-act="resolve">resolve</span>';div.innerHTML='<div class="cr-item-n">#'+n+'</div>'+(c.quote?'<div class="cr-item-q">'+esc(c.quote.slice(0,90))+(c.quote.length>90?'…':'')+'</div>':'')+'<div class="cr-item-t">'+esc(c.text)+'</div>'+'<div class="cr-item-m">'+esc(c.reviewer)+' · '+esc(c.ts)+'</div>'+'<div class="cr-item-acts">'+rb+'<span class="cr-item-del" data-act="del">delete</span></div>';if(c.quote)div.querySelector('.cr-item-q').addEventListener('click',function(){scrollToHL(c.id);});div.querySelector('.cr-item-t').addEventListener('click',function(){editComment(c.id);});div.querySelector('.cr-item-del').addEventListener('click',function(e){e.stopPropagation();removeHL(c.id);store.comments=store.comments.filter(function(x){return x.id!==c.id;});persist();});div.querySelector('[data-act="resolve"],[data-act="reopen"]').addEventListener('click',function(e){e.stopPropagation();c.status=c.status==='resolved'?'open':'resolved';removeHL(c.id);reHL(c);persist();});return div;}
+function renderPanel(){var panel=document.getElementById('cr-panel');var empty=document.getElementById('cr-panel-empty');var list=document.getElementById('cr-panel-list');var cnt=document.getElementById('cr-panel-count');if(!store.comments.length){panel.classList.remove('cr-has');document.body.classList.remove('cr-has-panel');empty.style.display='block';list.innerHTML='';cnt.textContent='';return;}panel.classList.add('cr-has');document.body.classList.add('cr-has-panel');empty.style.display='none';cnt.textContent=store.comments.length;list.innerHTML='';var open=store.comments.filter(function(c){return c.status!=='resolved';});var arch=store.comments.filter(function(c){return c.status==='resolved';});var n=0;open.forEach(function(c){list.appendChild(makeItem(c,++n));});if(arch.length){var h=document.createElement('div');h.className='cr-panel-section';h.textContent='Archived ('+arch.length+')';list.appendChild(h);arch.forEach(function(c){list.appendChild(makeItem(c,++n));});}}
+function scrollPanel(id){var el=document.querySelector('#cr-panel-list .cr-item[data-cid="'+id+'"]');if(el)el.scrollIntoView({block:'nearest'});}
+function scrollToHL(id){var el=document.querySelector('.cr-hl[data-cid="'+id+'"]');if(el)el.scrollIntoView({behavior:'smooth',block:'center'});}
+function editComment(id){var c=store.comments.find(function(x){return x.id===id;});if(!c)return;editingId=id;pendingRange=null;pendingQuote=c.quote;openPopover(c.quote,c.text,true);}
+function updateCount(){document.getElementById('cr-cnt').textContent=store.comments.length;}
+function buildOutput(){DATA.textContent=JSON.stringify(store,null,2);var summary=store.comments.map(function(c){return'[#'+(c.anchor||'-')+'] ('+c.status+') quote="'+(c.quote||'').replace(/"/g,"'").slice(0,80)+'" :: '+c.text.replace(/\n/g,' ');}).join('\n');return'<!DOCTYPE html>\n<!-- CLAUDE-REVIEW-COMMENTS\n'+summary+'\nEND-CLAUDE-REVIEW-COMMENTS -->\n'+document.documentElement.outerHTML;}
+function download(out){var b=new Blob([out],{type:'text/html'});var a=document.createElement('a');a.href=URL.createObjectURL(b);a.download=location.pathname.split('/').pop()||'review.html';document.body.appendChild(a);a.click();a.remove();toast('Downloaded — replace original with this file');}
+document.getElementById('cr-save').addEventListener('click',async function(){var out=buildOutput();try{if(!fileHandle&&window.showSaveFilePicker)fileHandle=await window.showSaveFilePicker({suggestedName:location.pathname.split('/').pop()||'review.html',types:[{description:'HTML',accept:{'text/html':['.html']}}]});if(fileHandle){var w=await fileHandle.createWritable();await w.write(out);await w.close();toast('Saved ✓');return;}}catch(e){}download(out);});
+document.getElementById('cr-clear').addEventListener('click',function(){if(!confirm('Delete all comments?'))return;store.comments.forEach(function(c){removeHL(c.id);});store.comments=[];persist();});
+var rvField=document.getElementById('cr-reviewer');rvField.value=store.reviewer||'';rvField.addEventListener('input',function(){store.reviewer=rvField.value.trim();try{localStorage.setItem(LS,JSON.stringify(store));}catch(e){}DATA.textContent=JSON.stringify(store,null,2);});
+restoreHLs();renderPanel();updateCount();
+})();
+</script>
+<!-- ============ END CLAUDE REVIEW WIDGET ============ -->
+
+</body>
+</html>
