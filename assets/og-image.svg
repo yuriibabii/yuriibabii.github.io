@@ -23,7 +23,7 @@
   <text x="96" y="386" font-family="'Helvetica Neue', Arial, sans-serif" font-size="42" font-weight="400" fill="#2B2A27" letter-spacing="2">Lead Android Engineer</text>
 
   <!-- Tagline -->
-  <text x="96" y="448" font-family="'Helvetica Neue', Arial, sans-serif" font-size="26" fill="#6E8B74" letter-spacing="0.5">8+ years · DraftKings · UAdemy · KMP</text>
+  <text x="96" y="448" font-family="'Helvetica Neue', Arial, sans-serif" font-size="26" fill="#4E6B55" letter-spacing="0.5">8+ years · DraftKings · UAdemy · Kotlin</text>
 
   <!-- URL in accent bar -->
   <text x="600" y="621" font-family="'Helvetica Neue', Arial, sans-serif" font-size="22" fill="#FAF8F4" text-anchor="middle" letter-spacing="1">yuriibabii.github.io</text>
